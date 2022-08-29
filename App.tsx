@@ -1,22 +1,30 @@
-import { StatusBar } from 'expo-status-bar';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import useCachedResources from './hooks/useCachedResources';
-import useColorScheme from './hooks/useColorScheme';
-import Navigation from './navigation';
+import { TailwindProvider } from 'tailwindcss-react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import HomeScreen from './screens/HomeScreen';
+import { StatusBar } from 'react-native';
+
 
 export default function App() {
+  const Stack = createNativeStackNavigator();
   const isLoadingComplete = useCachedResources();
-  const colorScheme = useColorScheme();
+
+
+  
 
   if (!isLoadingComplete) {
     return null;
   } else {
     return (
-      <SafeAreaProvider>
-        <Navigation colorScheme={colorScheme} />
-        <StatusBar />
-      </SafeAreaProvider>
+      <NavigationContainer>
+        <TailwindProvider>
+          <Stack.Navigator>
+            <Stack.Screen name='Home' component={HomeScreen} />
+            </Stack.Navigator>
+        </TailwindProvider>
+      </NavigationContainer>
     );
   }
 }
